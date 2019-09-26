@@ -6,6 +6,8 @@ namespace Tests\Unit;
 
 use App\Concert;
 use App\Order;
+use App\Reservation;
+use App\Ticket;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -45,20 +47,5 @@ class OrderTest extends TestCase
             'ticket_quantity' => 5,
             'amount' => 6000
         ], $result);
-    }
-
-    /** @test */
-    public function tickets_are_released_when_an_order_is_cancelled()
-    {
-        /** @var Concert $concert */
-        $concert = factory(Concert::class)->create()->addTickets(10);
-        /** @var Order $order */
-        $order = $concert->orderTickets('jane@example.com', 5);
-        $this->assertEquals(5, $concert->ticketsRemaining());
-
-        $order->cancel();
-
-        $this->assertEquals(10, $concert->ticketsRemaining());
-        $this->assertNull(Order::find($order->id));
     }
 }

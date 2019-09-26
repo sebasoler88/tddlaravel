@@ -73,6 +73,16 @@ class Concert extends Model
             ->count();
     }
 
+    public function reserveTickets($quantity, $email)
+    {
+        $tickets = $this->findTickets($quantity)
+            ->each(function (Ticket $ticket) {
+                $ticket->reserve();
+            });
+
+        return new Reservation($tickets, $email);
+    }
+
     public function findTickets(int $quantity)
     {
         $tickets = $this->tickets()->available()->take($quantity)->get();
