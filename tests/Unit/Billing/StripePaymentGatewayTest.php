@@ -21,7 +21,7 @@ class StripePaymentGatewayTest extends TestCase
     /** @test */
     public function charges_with_a_valid_payment_token_are_successful()
     {
-        $paymentGateway = new StripePaymentGateway(config('services.stripe.key'));
+        $paymentGateway = new StripePaymentGateway(config('services.stripe.secret'));
 
         $paymentGateway->charge(2500, $this->validToken());
 
@@ -33,7 +33,7 @@ class StripePaymentGatewayTest extends TestCase
     public function charges_with_an_invalid_payment_token_fail()
     {
         try {
-            $paymentGateway = new StripePaymentGateway(config('services.stripe.key'));
+            $paymentGateway = new StripePaymentGateway(config('services.stripe.secret'));
             $paymentGateway->charge(2500, 'invalid-payment-token');
         } catch (PaymentFailedException $e) {
             $this->assertCount(0, $this->newCharges());
@@ -49,7 +49,7 @@ class StripePaymentGatewayTest extends TestCase
     {
         return Charge::all(
             ['limit' => 1],
-            ['api_key' => config('services.stripe.key')])
+            ['api_key' => config('services.stripe.secret')])
         ['data'][0];
     }
 
@@ -62,14 +62,14 @@ class StripePaymentGatewayTest extends TestCase
                 'exp_year' => date('Y') + 1,
                 'cvc' => '123'
             ]
-        ], ['api_key' => config('services.stripe.key')])->id;
+        ], ['api_key' => config('services.stripe.secret')])->id;
     }
 
     private function newCharges()
     {
         return Charge::all(
             ['ending_before' => $this->lastCharge->id],
-            ['api_key' => config('services.stripe.key')])
+            ['api_key' => config('services.stripe.secret')])
         ['data'];
     }
 
