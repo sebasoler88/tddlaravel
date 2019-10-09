@@ -2,6 +2,8 @@
 
 namespace App\Billing;
 
+use Illuminate\Support\Collection;
+
 class FakePaymentGateway implements PaymentGateway
 {
 
@@ -31,6 +33,18 @@ class FakePaymentGateway implements PaymentGateway
         }
 
         $this->charges[] = $amount;
+    }
+
+    public function newChargesDuring(\Closure $callback)
+    {
+        $chargesForm = $this->charges->count();
+
+        $callback($this);
+
+        return $this->charges
+            ->slice($chargesForm)
+            ->reverse()
+            ->values();
     }
 
     public function totalCharges()

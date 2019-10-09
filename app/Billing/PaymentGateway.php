@@ -8,4 +8,6 @@ interface PaymentGateway
 {
 
     public function charge(int $amount, string $token);
+
+    public function getValidTestToken();
 }
