@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\features;
 
 use App\Concert;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
