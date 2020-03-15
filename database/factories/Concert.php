@@ -20,3 +20,16 @@ $factory->define(\App\Concert::class, function (Faker $faker) {
         'additional_information' => 'For tickets, call (555) 555-5555.',
     ];
 });
+
+$factory->state(\App\Concert::class, 'published', function () {
+    return [
+        'published_at' => Carbon::parse('-1 week')
+    ];
+});
+
+$factory->state(\App\Concert::class, 'unpublished', function () {
+    return [
+        'published_at' => null
+    ];
+});
+
